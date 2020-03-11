@@ -22,7 +22,8 @@ class App extends Component {
 			input: '',
 			imageUrl: '',
 			box: {},
-			route: 'Signin'
+			route: 'signin',
+			isSignedIn: false
 		}
 	} 
 	calculateFaceLocation = (data)=>{
@@ -39,11 +40,18 @@ class App extends Component {
 	}
 
 	displayFaceBox =(box)=>{
-		console.log(box)
 		this.setState({box: box})
 	}
 
 	onRouteChange =(route)=>{
+		if(route === 'signout'){
+			this.setState({isSignedIn: false})
+		}
+		else
+			if(route === 'home')
+			{
+				this.setState({isSignedIn:true})
+			}
 		this.setState({route: route })
 	}
 
@@ -62,7 +70,7 @@ class App extends Component {
  render(){ 
      return (
     <div className="App">
-     <Navigation onRouteChange={this.onRouteChange}/>
+     <Navigation onRouteChange={this.onRouteChange} isSignedIn={this.state.isSignedIn}/>
      { this.state.route === 'home'?
        <div><Logo />
               <Rank />
@@ -74,8 +82,7 @@ class App extends Component {
                imageUrl={this.state.imageUrl} 
                box={this.state.box}/>
          </div>
-           :   (
-           this.state.route === 'Signin')  ?
+           :   (this.state.route === 'signin' || this.state.route === 'signout')  ?
            <Signin onRouteChange={this.onRouteChange}/>
            :<Register onRouteChange={this.onRouteChange}/>
       }
